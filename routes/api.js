@@ -32,4 +32,25 @@ router.get('/get_task/:taskId', function(req, res, next) {
 		})
 });
 
+router.post('/new_task', function (req, res) {
+	task.create({
+		name: req.body.taskName,
+		statusId: req.body.statusId
+	});
+});
+
+router.put('/update_task', function (req, res) {
+	task.update({
+		name: req.body.taskName,
+		statusId: req.body.statusId
+	},
+	{
+		where: {id: req.body.taskId}
+	});
+});
+
+router.delete('/delete_task', function (req, res) {
+	task.destroy({where: {id: req.body.taskId}});
+});
+
 module.exports = router;
