@@ -8,14 +8,14 @@
         		<div v-if="selectedTask.id != task.id">{{ task.status.name }}</div>
         		<input v-if="selectedTask.id == task.id" v-model="selectedTask.name"/>
         		
-        		<select v-if="selectedTask.id == task.id" v-model="selectedTask.status.id">
-        		  <option v-for="status in statusList" value="status.id">{{ status.name }}</option>
+        		<select v-if="selectedTask.id == task.id" v-model="newStatus">
+        		  <option v-for="status in statusList" :value="status.id">{{ status.name }}</option>
         		</select>
 				
         		<button v-if="selectedTask.id != task.id" @click.prevent="selectedTask = task">Update</button>
         		<button v-if="selectedTask.id == task.id" @click.prevent="saveTask()">Save</button>
         		<button v-if="selectedTask.id == task.id" @click.prevent="selectedTask = []">Undo</button>
-        		<button @click.prevent="deleteTask(task.id)">Delete</button>
+        		<button v-if="selectedTask.id != task.id" @click.prevent="deleteTask(task.id)">Delete</button>
         	</li>
         </ul>
         <div>
@@ -34,6 +34,7 @@ export default {
             taskList: [],
             statusList: [],
             selectedTask: [],
+            newStatus:1,
             newTask:{
             	name: '',
             	statusId: 1
@@ -57,6 +58,16 @@ export default {
 		  .catch(function (error) {
 			  console.log(error);
 		  });
+	},
+	watch : {
+		selectedTask : function(newTask,oldTask){
+			var self = this;
+			if (newTask.status) {
+				self.newStatus = newTask.status.id;
+			} else {
+				self.newStatus = 1;
+			}
+		}
 	},
 	methods: {
 		refreshList: function() {
@@ -84,7 +95,7 @@ export default {
 			axios.put('/api/update_task',{
 				taskId: self.selectedTask.id,
 				taskName: self.selectedTask.name,
-				statusId: Number(self.selectedTask.status.id)
+				statusId: self.newStatus
 			})
 			  .then(function (response) {
 				  self.refreshList();

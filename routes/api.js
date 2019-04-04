@@ -27,7 +27,7 @@ router.get('/get_status', function(req, res, next) {
 });
 
 router.get('/get_task', function(req, res, next) {
-	task.findAll({include: [status]}).then(rows => {
+	task.findAll({include: [status],order: [['id','DESC']]}).then(rows => {
 		res.json(rows);
 		})
 });

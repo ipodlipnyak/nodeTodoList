@@ -19,5 +19,18 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipodlipnyak/nodeTodoList.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ipodlipnyak/nodeTodoList/issues"
+  },
+  "homepage": "https://github.com/ipodlipnyak/nodeTodoList#readme",
+  "description": ""
 }
