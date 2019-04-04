@@ -1,0 +1,5 @@
+*.py
+*.pyc
+/node_modules
+/sql_dump
+*.swp
