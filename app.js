@@ -10,6 +10,10 @@ var apiRouter = require('./routes/api')
 
 var app = express();
 
+var expressVue = require("express-vue");
+var expressVueMiddleware = expressVue.init();
+app.use(expressVueMiddleware);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

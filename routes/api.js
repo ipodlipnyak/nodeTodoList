@@ -20,6 +20,12 @@ var task = sequelize.define('task', {
 status.hasMany(task);
 task.belongsTo(status);
 
+router.get('/get_status', function(req, res, next) {
+	status.findAll().then(rows => {
+		res.json(rows);
+		})
+});
+
 router.get('/get_task', function(req, res, next) {
 	task.findAll({include: [status]}).then(rows => {
 		res.json(rows);
@@ -37,6 +43,7 @@ router.post('/new_task', function (req, res) {
 		name: req.body.taskName,
 		statusId: req.body.statusId
 	});
+	res.json({status:'success'});
 });
 
 router.put('/update_task', function (req, res) {
@@ -47,10 +54,12 @@ router.put('/update_task', function (req, res) {
 	{
 		where: {id: req.body.taskId}
 	});
+	res.json({status:'success'});
 });
 
-router.delete('/delete_task', function (req, res) {
-	task.destroy({where: {id: req.body.taskId}});
+router.delete('/delete_task/:taskId', function (req, res) {
+	task.destroy({where: {id: req.params.taskId}});
+	res.json({status:'success'});
 });
 
 module.exports = router;
