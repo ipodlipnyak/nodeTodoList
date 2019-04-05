@@ -1,10 +1,10 @@
 <template>
-    <div>
-    	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <h1>Task list</h1>
+<div>
+	<div v-if="!showTask" id='task-list'>
+		<h3>Task list</h3>
         <ul>
         	<li v-for="task in taskList">
-        		<div v-if="selectedTask.id != task.id">{{ task.name }}</div>
+        		<div v-if="selectedTask.id != task.id"><a href="#" @click.prevent="showTask = task.id">{{ task.name }}</a></div>
         		<div v-if="selectedTask.id != task.id">{{ task.status.name }}</div>
         		<input v-if="selectedTask.id == task.id" v-model="selectedTask.name"/>
         		
@@ -18,21 +18,29 @@
         		<button v-if="selectedTask.id != task.id" @click.prevent="deleteTask(task.id)">Delete</button>
         	</li>
         </ul>
-        <div>
-        <h3>New task</h3>
-        <input v-model="newTask.name"/>
-        <button @click.prevent="saveNewTask()">Create task</button>
-        </div>
-    </div>
+		<div>
+			<h3>New task</h3>
+			<input v-model="newTask.name" />
+			<button @click.prevent="saveNewTask()">Create task</button>
+		</div>
+	</div>
+	<div id='task-data' v-if="showTask">
+		<task ref="task" :task-id="showTask"></task>
+		<button @click.prevent="showTask=''">Close</button>
+	</div>
+	
+</div>
 </template>
 
 <script>
 var axios = require('axios');
+import task from './task.vue';
 export default {
     data: function () {
         return {
             taskList: [],
             statusList: [],
+            showTask: '',
             selectedTask: [],
             newStatus:1,
             newTask:{
@@ -40,6 +48,9 @@ export default {
             	statusId: 1
             }
         }
+    },
+    components: {
+        task,
     },
 	beforeCreate : function() {
 		var self = this;

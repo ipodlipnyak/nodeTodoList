@@ -10,13 +10,42 @@ var apiRouter = require('./routes/api')
 
 var app = express();
 
+//view engine setup
 var expressVue = require("express-vue");
-var expressVueMiddleware = expressVue.init();
+var vueOptions = {
+	    head: {
+	        title: 'Demo app',
+	        // Meta tags
+	        metas: [
+	            { name: 'application-name', content: 'NodeTest' },
+	            { name: 'description', content: 'A node.js todo list', id: 'desc' },
+	            // Rel
+	            { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+	            // Generic rel for things like icons and stuff
+	        ],
+	        // Scripts
+	        scripts: [
+	        	{ src: 'https://unpkg.com/axios/dist/axios.min.js' }
+	            // { src: '/assets/scripts/hammer.min.js' },
+	            // { src: '/assets/scripts/vue-touch.min.js', charset: 'utf-8' },
+	            // Note with Scripts [charset] is optional defaults to utf-8
+	            // ...
+	        ],
+	        // Styles
+	        styles: [
+//	            { style: '/assets/rendered/style.css' }
+//	            { style: '/assets/rendered/style.css', type: 'text/css' }
+	            // Note with Styles, [type] is optional...
+	            // ...
+	        ],
+	    }
+};
+var expressVueMiddleware = expressVue.init(vueOptions);
 app.use(expressVueMiddleware);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -42,7 +71,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.renderVue('../../views/error.vue',{ error: err.status });
+//  res.render('error');
 });
 
 module.exports = app;
